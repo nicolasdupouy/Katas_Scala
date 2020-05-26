@@ -1,3 +1,3 @@
 class FizzBuzz {
-  def display(i: Int): String = "1"
+  def display(i: Int): String = i.toString
 }
