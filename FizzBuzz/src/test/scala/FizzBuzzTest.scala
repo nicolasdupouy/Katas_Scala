@@ -12,5 +12,10 @@ class FizzBuzzTest extends FunSpec with Matchers {
     it("should display 2 when parameter is 2") {
       fizzBuzz.display(2) should be ("2")
     }
+
+    it("should display Fizz when parameter is a multiple of 3") {
+      fizzBuzz.display(3) should be ("Fizz")
+      fizzBuzz.display(15) should be ("Fizz")
+    }
   }
 }
