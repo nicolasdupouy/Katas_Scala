@@ -9,7 +9,7 @@ class FizzBuzz {
     def isMultipleOfFive(x: Int): Boolean = x % 5 == 0
 
     i match {
-      case x if isMultipleOfThreeAndFive(x) => FIZZ_BUZZ: String
+      case x if isMultipleOfThreeAndFive(x) => FIZZ_BUZZ
       case x if isMultipleOfThree(x) => FIZZ
       case x if isMultipleOfFive(x) => BUZZ
       case x => x.toString
