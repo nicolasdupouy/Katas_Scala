@@ -1,4 +1,4 @@
-name := "BowlingGameKata"
+name := "BowlingGame"
 
 version := "0.1"
 
