@@ -1,7 +1,9 @@
 class BowlingGame {
-  def roll(pins: Int): Unit = {
+  var pinsKnockedDown = 0
 
+  def roll(pins: Int): Unit = {
+    pinsKnockedDown += pins
   }
 
-  def score(): Int = 0
+  def score(): Int = pinsKnockedDown
 }
