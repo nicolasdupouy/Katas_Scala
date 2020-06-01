@@ -12,11 +12,20 @@ class BowlingGame {
       frames = frames :+ Frame(pins)
   }
 
-  def score(): Int = {
+  def scorePatternMatching(): Int = {
+    def pm(bowlingFrames: List[Frame]): Int = bowlingFrames match {
+      case Nil => 0
+      case h :: t => h.getRoll1 + h.getRoll2 + pm(t)
+    }
+
+    pm(this.frames)
+  }
+
+  def scoreRecursive(): Int = {
     @tailrec
-    def loop(frames: List[Frame], computedScore: Int): Int = {
-      if (frames.isEmpty) computedScore
-      else loop(frames.tail, computedScore + frames.head.getRoll1 + frames.head.getRoll2)
+    def loop(bowlingFrames: List[Frame], computedScore: Int): Int = {
+      if (bowlingFrames.isEmpty) computedScore
+      else loop(bowlingFrames.tail, computedScore + bowlingFrames.head.getRoll1 + bowlingFrames.head.getRoll2)
     }
 
     loop(this.frames, 0)

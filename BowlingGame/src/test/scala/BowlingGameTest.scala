@@ -8,7 +8,9 @@ class BowlingGameTest extends FunSpec with Matchers {
       for(i <- 1 to 20) {
         game.roll(0)
       }
-      game.score() should be(0)
+
+      game.scorePatternMatching should be(0)
+      game.scoreRecursive should be(0)
     }
   }
 }
