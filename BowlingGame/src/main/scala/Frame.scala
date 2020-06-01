@@ -13,4 +13,6 @@ case class Frame(private val pins: Int) {
 
   def isFinished: Boolean = finished
   def isNotFinished: Boolean = !finished
+
+  def isSpear: Boolean = roll1 + roll2 == 10
 }
