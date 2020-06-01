@@ -28,11 +28,25 @@ class BowlingGameScenarioTest extends FeatureSpec with GivenWhenThen with Matche
     game.scorePatternMatching should be(12)
     game.scoreRecursive should be(12)
 
-    When("7 pins down")
+    When("7 pins down in frame 3, roll 1")
     game.roll(7)
 
     Then("score is 26 (12 + 7*2)")
     game.scorePatternMatching should be(26)
     game.scoreRecursive should be(26)
+
+    When("3 pins down in frame 3, roll 2 (second spear)")
+    game.roll(3)
+
+    Then("score is 29")
+    game.scorePatternMatching should be(29)
+    game.scoreRecursive should be(29)
+
+    When("2 pins down in frame 4, roll 1")
+    game.roll(2)
+
+    Then("score is 33 (29 + 2*2)")
+    game.scorePatternMatching should be(33)
+    game.scoreRecursive should be(33)
   }
 }
