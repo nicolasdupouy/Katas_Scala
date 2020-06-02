@@ -87,5 +87,16 @@ class BowlingGameScenarioTest extends FeatureSpec with GivenWhenThen with Matche
     Then("score is 105 (68 + frame 7:[10+10+1] + frame 8:[10+1+2] + frame 9:[1+2])")
     game.scorePatternMatching should be(105)
     game.scoreRecursive should be(105)
+
+    When("7 pins down in frame 10, roll 1")
+    game.roll(7)
+    When("3 pins down in frame 10, roll 2")
+    game.roll(3)
+    When("7 pins down in frame 10, roll 3")
+    game.roll(7)
+
+    Then("final score is (105 + 7 + 3 + 7(spear)")
+    game.scorePatternMatching should be(122)
+    game.scoreRecursive should be(122)
   }
 }
