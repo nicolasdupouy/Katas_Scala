@@ -99,4 +99,70 @@ class BowlingGameScenarioTest extends FeatureSpec with GivenWhenThen with Matche
     game.scorePatternMatching should be(122)
     game.scoreRecursive should be(122)
   }
+
+  scenario("Uncle Bob example") {
+    Given("new game started")
+    val game = new BowlingGame
+
+    When("1 pin down in frame 1, roll 1")
+    game.roll(1)
+    When("4 pins down in frame 1, roll 2")
+    game.roll(4)
+    Then("score is 5")
+    game.scorePatternMatching should be(5)
+    game.scoreRecursive should be(5)
+
+    When("4 pins down in frame 2, roll 1")
+    game.roll(4)
+    When("5 pins down in frame 2, roll 2")
+    game.roll(5)
+    Then("score is 14")
+    game.scorePatternMatching should be(14)
+    game.scoreRecursive should be(14)
+
+    When("6 pins down in frame 3, roll 1")
+    game.roll(6)
+    When("4 pins down in frame 3, roll 2")
+    game.roll(4)
+
+    When("5 pins down in frame 4, roll 1")
+    game.roll(5)
+    When("5 pins down in frame 4, roll 2")
+    game.roll(5)
+
+    When("strike in frame 5, roll 1")
+    game.roll(10)
+
+    When("0 pins down in frame 6, roll 1")
+    game.roll(0)
+    When("1 pins down in frame 6, roll 2")
+    game.roll(1)
+    Then("score is 61")
+    game.scorePatternMatching should be(61)
+    game.scoreRecursive should be(61)
+
+    When("7 pins down in frame 7, roll 1")
+    game.roll(7)
+    When("3 pins down in frame 7, roll 2")
+    game.roll(3)
+
+    When("6 pins down in frame 8, roll 1")
+    game.roll(6)
+    When("4 pins down in frame 8, roll 2")
+    game.roll(4)
+
+    When("strike in frame 9, roll 1")
+    game.roll(10)
+
+    When("2 pins down in frame 10, roll 1")
+    game.roll(2)
+    When("8 pins down in frame 10, roll 2")
+    game.roll(8)
+    When("6 pins down in frame 10, roll 3")
+    game.roll(6)
+
+    Then("score is 133")
+    game.scorePatternMatching should be(133)
+    game.scoreRecursive should be(133)
+  }
 }
