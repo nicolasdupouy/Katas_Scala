@@ -4,7 +4,7 @@ class BowlingGame {
   private var frames = List[Frame]()
 
   def roll(pins: Int): Unit = {
-    if (frames.nonEmpty && frames.last.isInstanceOf[TenthFrame]) {
+    if (frames.nonEmpty && frames.last.isLastFrame) {
       val l = frames.last.asInstanceOf[TenthFrame]
       if (!l.roll2Done) {
         l.roll2Done = true
@@ -25,8 +25,8 @@ class BowlingGame {
   def scorePatternMatching(): Int = {
     def pm(bowlingFrames: List[Frame]): Int = bowlingFrames match {
       case Nil => 0
-      case h :: Nil if h.isInstanceOf[TenthFrame] && (h.isStrike || h.isSpear) => h.sumRolls + h.asInstanceOf[TenthFrame].roll3
-      case h :: Nil if h.isInstanceOf[TenthFrame] => h.sumRolls
+      case h :: Nil if h.isLastFrame && (h.isStrike || h.isSpear) => h.sumRolls + h.asInstanceOf[TenthFrame].roll3
+      case h :: Nil if h.isLastFrame => h.sumRolls
       case h :: Nil => h.getRoll1 + h.getRoll2
       case h :: t if h.isStrike && t.head.isStrike => h.sumRolls + t.head.getRoll1 + t.tail.head.getRoll1 + pm(t)
       case h :: t if h.isStrike => h.sumRolls + t.head.sumRolls + pm(t)
@@ -42,7 +42,7 @@ class BowlingGame {
     def loop(bowlingFrames: List[Frame], computedScore: Int): Int = {
       if (bowlingFrames.isEmpty)
         computedScore
-      else if (bowlingFrames.head.isInstanceOf[TenthFrame] && (bowlingFrames.head.isStrike || bowlingFrames.head.isSpear))
+      else if (bowlingFrames.head.isLastFrame && (bowlingFrames.head.isStrike || bowlingFrames.head.isSpear))
         loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls + bowlingFrames.head.asInstanceOf[TenthFrame].roll3)
       else if (bowlingFrames.head.isStrike && bowlingFrames.tail.nonEmpty && bowlingFrames.tail.head.isStrike)
         loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls + bowlingFrames.tail.head.getRoll1 + bowlingFrames.tail.tail.head.getRoll1)

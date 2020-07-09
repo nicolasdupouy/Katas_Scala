@@ -17,4 +17,6 @@ case class Frame(private val pins: Int) {
 
   def isStrike: Boolean = roll1 == 10
   def isSpear: Boolean = !isStrike && (roll1 + roll2 == 10)
+
+  def isLastFrame: Boolean = false
 }
