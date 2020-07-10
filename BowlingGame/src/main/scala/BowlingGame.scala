@@ -30,8 +30,8 @@ class BowlingGame {
       case h :: Nil => h.getRoll1 + h.getRoll2
       case h :: t if h.isStrike && t.head.isStrike && t.head.isLastFrame => h.sumRolls + t.head.sumRolls + pm(t)
       case h :: t if h.isStrike && t.head.isStrike => h.sumRolls + t.head.getRoll1 + t.tail.head.getRoll1 + pm(t)
-      case h :: t if h.isStrike => h.sumRolls + t.head.sumRolls + pm(t)
-      case h :: t if h.isSpear => h.sumRolls + t.head.getRoll1 + pm(t)
+      case h :: t if h.isStrike => scoreWhenStrike(h, t.head) + pm(t)
+      case h :: t if h.isSpear => scoreWhenSpear(h, t.head) + pm(t)
       case h :: t => h.sumRolls + pm(t)
     }
 
@@ -50,13 +50,16 @@ class BowlingGame {
       else if (bowlingFrames.head.isStrike && bowlingFrames.tail.nonEmpty && bowlingFrames.tail.head.isStrike)
         loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls + bowlingFrames.tail.head.getRoll1 + bowlingFrames.tail.tail.head.getRoll1)
       else if (bowlingFrames.head.isStrike && bowlingFrames.tail.nonEmpty)
-        loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls + bowlingFrames.tail.head.sumRolls)
+        loop(bowlingFrames.tail, computedScore + scoreWhenStrike(bowlingFrames.head, bowlingFrames.tail.head))
       else if (bowlingFrames.head.isSpear && bowlingFrames.tail.nonEmpty)
-        loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls + bowlingFrames.tail.head.getRoll1)
+        loop(bowlingFrames.tail, computedScore + scoreWhenSpear(bowlingFrames.head, bowlingFrames.tail.head))
       else
         loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls)
     }
 
     loop(this.frames, 0)
   }
+
+  private def scoreWhenSpear(currentFrame: Frame, nextFrame: Frame): Int = currentFrame.sumRolls + nextFrame.getRoll1
+  private def scoreWhenStrike(currentFrame: Frame, nextFrame: Frame): Int = currentFrame.sumRolls + nextFrame.sumRolls
 }
