@@ -26,11 +26,8 @@ class BowlingGame {
     def pm(bowlingFrames: List[Frame]): Int = bowlingFrames match {
       case Nil => 0
       case h :: Nil if h.isLastFrame && (h.isStrike || h.isSpear) => h.sumRolls + h.asInstanceOf[TenthFrame].roll3
-      case h :: Nil if h.isLastFrame => h.sumRolls
-      case h :: Nil => h.getRoll1 + h.getRoll2
-      case h :: t if h.isStrike && t.head.isStrike && t.head.isLastFrame => h.sumRolls + t.head.sumRolls + pm(t)
-      case h :: t if h.isStrike && t.head.isStrike => h.sumRolls + t.head.getRoll1 + t.tail.head.getRoll1 + pm(t)
-      case h :: t if h.isStrike => scoreWhenStrike(h, t.head) + pm(t)
+      case h :: Nil => h.sumRolls
+      case h :: t if h.isStrike => scoreWhenStrike(h, t.head, t.tail) + pm(t)
       case h :: t if h.isSpear => scoreWhenSpear(h, t.head) + pm(t)
       case h :: t => h.sumRolls + pm(t)
     }
@@ -45,12 +42,8 @@ class BowlingGame {
         computedScore
       else if (bowlingFrames.head.isLastFrame && (bowlingFrames.head.isStrike || bowlingFrames.head.isSpear))
         loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls + bowlingFrames.head.asInstanceOf[TenthFrame].roll3)
-      else if (bowlingFrames.head.isStrike && bowlingFrames.tail.nonEmpty && bowlingFrames.tail.head.isLastFrame)
-        loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls + bowlingFrames.tail.head.sumRolls)
-      else if (bowlingFrames.head.isStrike && bowlingFrames.tail.nonEmpty && bowlingFrames.tail.head.isStrike)
-        loop(bowlingFrames.tail, computedScore + bowlingFrames.head.sumRolls + bowlingFrames.tail.head.getRoll1 + bowlingFrames.tail.tail.head.getRoll1)
       else if (bowlingFrames.head.isStrike && bowlingFrames.tail.nonEmpty)
-        loop(bowlingFrames.tail, computedScore + scoreWhenStrike(bowlingFrames.head, bowlingFrames.tail.head))
+        loop(bowlingFrames.tail, computedScore + scoreWhenStrike(bowlingFrames.head, bowlingFrames.tail.head, bowlingFrames.tail.tail))
       else if (bowlingFrames.head.isSpear && bowlingFrames.tail.nonEmpty)
         loop(bowlingFrames.tail, computedScore + scoreWhenSpear(bowlingFrames.head, bowlingFrames.tail.head))
       else
@@ -61,5 +54,13 @@ class BowlingGame {
   }
 
   private def scoreWhenSpear(currentFrame: Frame, nextFrame: Frame): Int = currentFrame.sumRolls + nextFrame.getRoll1
-  private def scoreWhenStrike(currentFrame: Frame, nextFrame: Frame): Int = currentFrame.sumRolls + nextFrame.sumRolls
+
+  private def scoreWhenStrike(currentFrame: Frame, nextFrame: Frame, tail: List[Frame]): Int = {
+    if (nextFrame.isStrike && nextFrame.isLastFrame)
+      currentFrame.sumRolls + nextFrame.sumRolls
+    else if (nextFrame.isStrike)
+      currentFrame.sumRolls + nextFrame.getRoll1 + tail.head.getRoll1
+    else
+      currentFrame.sumRolls + nextFrame.sumRolls
+  }
 }
